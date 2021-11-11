@@ -1,4 +1,4 @@
-module github.com/ChainSafe/chainbridge-utils
+module github.com/NaturalSelectionLabs/bridge-utils
 
 go 1.13
 
