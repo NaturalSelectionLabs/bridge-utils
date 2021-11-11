@@ -6,6 +6,8 @@ package msg
 import (
 	"fmt"
 	"math/big"
+
+	"github.com/ethereum/go-ethereum/common"
 )
 
 type ChainId uint8
@@ -24,62 +26,25 @@ func (n Nonce) Big() *big.Int {
 
 var FungibleTransfer TransferType = "FungibleTransfer"
 var NonFungibleTransfer TransferType = "NonFungibleTransfer"
-var GenericTransfer TransferType = "GenericTransfer"
 
 // Message is used as a generic format to communicate between chains
 type Message struct {
-	Source       ChainId      // Source where message was initiated
-	Destination  ChainId      // Destination chain of message
-	Type         TransferType // type of bridge transfer
-	DepositNonce Nonce        // Nonce for the deposit
-	ResourceId   ResourceId
-	Payload      []interface{} // data associated with event sequence
+	DepositId        *big.Int
+	Owner            common.Address
+	SidechainAddress common.Address
+	Standard         uint32
+	TokenNumber      *big.Int
 }
 
-func NewFungibleTransfer(source, dest ChainId, nonce Nonce, amount *big.Int, resourceId ResourceId, recipient []byte) Message {
+func NewFungibleTransfer(depositId *big.Int, owner common.Address, sidechainAddress common.Address, standard uint32, tokenNumber *big.Int) Message {
 	return Message{
-		Source:       source,
-		Destination:  dest,
-		Type:         FungibleTransfer,
-		DepositNonce: nonce,
-		ResourceId:   resourceId,
-		Payload: []interface{}{
-			amount.Bytes(),
-			recipient,
-		},
+		DepositId: depositId,
+		Owner: owner,
+		SidechainAddress: sidechainAddress,
+		Standard: standard,
+		TokenNumber: tokenNumber,
 	}
 }
 
-func NewNonFungibleTransfer(source, dest ChainId, nonce Nonce, resourceId ResourceId, tokenId *big.Int, recipient, metadata []byte) Message {
-	return Message{
-		Source:       source,
-		Destination:  dest,
-		Type:         NonFungibleTransfer,
-		DepositNonce: nonce,
-		ResourceId:   resourceId,
-		Payload: []interface{}{
-			tokenId.Bytes(),
-			recipient,
-			metadata,
-		},
-	}
-}
-
-func NewGenericTransfer(source, dest ChainId, nonce Nonce, resourceId ResourceId, metadata []byte) Message {
-	return Message{
-		Source:       source,
-		Destination:  dest,
-		Type:         GenericTransfer,
-		DepositNonce: nonce,
-		ResourceId:   resourceId,
-		Payload: []interface{}{
-			metadata,
-		},
-	}
-}
-
-func ResourceIdFromSlice(in []byte) ResourceId {
-	var res ResourceId
-	copy(res[:], in)
-	return res
-}
+// TODO
+// NewNonFungibleTransfer
