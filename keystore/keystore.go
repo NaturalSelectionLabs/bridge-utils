@@ -1,6 +1,3 @@
-// Copyright 2020 ChainSafe Systems
-// SPDX-License-Identifier: LGPL-3.0-only
-
 /*
 The keystore package is used to load keys from keystore files, both for live use and for testing.
 

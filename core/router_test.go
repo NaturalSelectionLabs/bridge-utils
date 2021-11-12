@@ -1,6 +1,3 @@
-// Copyright 2020 ChainSafe Systems
-// SPDX-License-Identifier: LGPL-3.0-only
-
 package core
 
 import (
@@ -8,8 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/NaturalSelectionLabs/bridge-utils/msg"
 	"github.com/ChainSafe/log15"
+	"github.com/NaturalSelectionLabs/bridge-utils/msg"
 )
 
 type mockWriter struct {
@@ -30,19 +27,19 @@ func TestRouter(t *testing.T) {
 	router := NewRouter(tLog)
 
 	ethW := &mockWriter{msgs: *new([]msg.Message)}
-	router.Listen(msg.ChainId(0), ethW)
+	router.Listen(0, ethW)
 
 	ctfgW := &mockWriter{msgs: *new([]msg.Message)}
-	router.Listen(msg.ChainId(1), ctfgW)
+	router.Listen(1, ctfgW)
 
 	msgEthToCtfg := msg.Message{
-		Source:      msg.ChainId(0),
-		Destination: msg.ChainId(1),
+		Source:      0,
+		Destination: 1,
 	}
 
 	msgCtfgToEth := msg.Message{
-		Source:      msg.ChainId(1),
-		Destination: msg.ChainId(0),
+		Source:      1,
+		Destination: 0,
 	}
 
 	err := router.Send(msgCtfgToEth)

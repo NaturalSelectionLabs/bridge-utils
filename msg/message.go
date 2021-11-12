@@ -1,6 +1,3 @@
-// Copyright 2020 ChainSafe Systems
-// SPDX-License-Identifier: LGPL-3.0-only
-
 package msg
 
 import (
@@ -29,6 +26,8 @@ var NonFungibleTransfer TransferType = "NonFungibleTransfer"
 
 // Message is used as a generic format to communicate between chains
 type Message struct {
+	Source 		 	 uint8
+	Destination		 uint8
 	DepositId        *big.Int
 	Owner            common.Address
 	SidechainAddress common.Address
@@ -36,8 +35,9 @@ type Message struct {
 	TokenNumber      *big.Int
 }
 
-func NewFungibleTransfer(depositId *big.Int, owner common.Address, sidechainAddress common.Address, standard uint32, tokenNumber *big.Int) Message {
+func NewFungibleTransfer(chainId uint8, depositId *big.Int, owner common.Address, sidechainAddress common.Address, standard uint32, tokenNumber *big.Int) Message {
 	return Message{
+		Source: chainId,
 		DepositId: depositId,
 		Owner: owner,
 		SidechainAddress: sidechainAddress,

@@ -1,6 +1,3 @@
-// Copyright 2020 ChainSafe Systems
-// SPDX-License-Identifier: LGPL-3.0-only
-
 package health
 
 import (
@@ -11,9 +8,9 @@ import (
 	"path"
 	"time"
 
+	log "github.com/ChainSafe/log15"
 	"github.com/NaturalSelectionLabs/bridge-utils/core"
 	"github.com/NaturalSelectionLabs/bridge-utils/msg"
-	log "github.com/ChainSafe/log15"
 )
 
 type httpMetricServer struct {

@@ -1,6 +1,3 @@
-// Copyright 2020 ChainSafe Systems
-// SPDX-License-Identifier: LGPL-3.0-only
-
 /*
 The crypto package is used to provide functionality to several keypair types.
 The current supported types are secp256k1 and sr25519.
