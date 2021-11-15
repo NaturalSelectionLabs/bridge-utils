@@ -33,10 +33,10 @@ func (r *Router) Send(msg msg.Message) error {
 	r.lock.Lock()
 	defer r.lock.Unlock()
 
-	r.log.Info("Routing message", "chainId", msg.Source, "depositId", msg.DepositId, "owner", msg.Owner, "sidechainAddress", msg.SidechainAddress, "standard", msg.Standard, "tokenNumber", msg.TokenNumber)
-	w := r.registry[msg.Source]
+	r.log.Info("Routing message", "ChainType", msg.ChainType, "depositId", msg.DepositId, "owner", msg.Owner, "TokenAddress", msg.TokenAddress, "standard", msg.Standard, "tokenNumber", msg.TokenNumber)
+	w := r.registry[msg.ChainType]
 	if w == nil {
-		return fmt.Errorf("unknown chainId: %d", msg.Source)
+		return fmt.Errorf("unknown chainType: %d", msg.ChainType)
 	}
 
 	go w.ResolveMessage(msg)
@@ -44,9 +44,9 @@ func (r *Router) Send(msg msg.Message) error {
 }
 
 // Listen registers a Writer with a ChainId which Router.Send can then use to propagate messages
-func (r *Router) Listen(chainId uint8, w Writer) {
+func (r *Router) Listen(chainType uint8, w Writer) {
 	r.lock.Lock()
 	defer r.lock.Unlock()
-	r.log.Info("Registering new chain in router", "chainId", chainId)
-	r.registry[chainId] = w
+	r.log.Info("Registering new chain in router", "chainType", chainType)
+	r.registry[chainType] = w
 }
