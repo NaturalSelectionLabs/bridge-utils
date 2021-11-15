@@ -33,7 +33,7 @@ func (r *Router) Send(msg msg.Message) error {
 	r.lock.Lock()
 	defer r.lock.Unlock()
 
-	r.log.Trace("Routing message", "chainId", msg.Source, "depositId", msg.DepositId, "owner", msg.Owner, "sidechainAddress", msg.SidechainAddress, "standard", msg.Standard, "tokenNumber", msg.TokenNumber)
+	r.log.Info("Routing message", "chainId", msg.Source, "depositId", msg.DepositId, "owner", msg.Owner, "sidechainAddress", msg.SidechainAddress, "standard", msg.Standard, "tokenNumber", msg.TokenNumber)
 	w := r.registry[msg.Source]
 	if w == nil {
 		return fmt.Errorf("unknown chainId: %d", msg.Source)
@@ -47,6 +47,6 @@ func (r *Router) Send(msg msg.Message) error {
 func (r *Router) Listen(chainId uint8, w Writer) {
 	r.lock.Lock()
 	defer r.lock.Unlock()
-	r.log.Debug("Registering new chain in router", "chainId", chainId)
+	r.log.Info("Registering new chain in router", "chainId", chainId)
 	r.registry[chainId] = w
 }
