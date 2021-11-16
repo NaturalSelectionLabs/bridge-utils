@@ -27,18 +27,32 @@ var NonFungibleTransfer TransferType = "NonFungibleTransfer"
 // Message is used as a generic format to communicate between chains
 type Message struct {
 	ChainType    uint8
-	Destination  uint8
+	MsgType		 uint8
 	DepositId    *big.Int
+	WithdrawId    *big.Int
 	Owner        common.Address
 	TokenAddress common.Address
 	Standard     uint32
 	TokenNumber  *big.Int
 }
 
-func NewFungibleTransfer(chainType uint8, depositId *big.Int, owner common.Address, tokenAddress common.Address, standard uint32, tokenNumber *big.Int) Message {
+func NewFungibleTokenDeposit(chainType uint8, msgType uint8, depositId *big.Int, owner common.Address, tokenAddress common.Address, standard uint32, tokenNumber *big.Int) Message {
 	return Message{
 		ChainType: chainType,
+		MsgType: msgType,
 		DepositId: depositId,
+		Owner: owner,
+		TokenAddress: tokenAddress,
+		Standard: standard,
+		TokenNumber: tokenNumber,
+	}
+}
+
+func NewFungibleTokenWithdraw(chainType uint8, msgType uint8, withdrawId *big.Int, owner common.Address, tokenAddress common.Address, standard uint32, tokenNumber *big.Int) Message {
+	return Message{
+		ChainType: chainType,
+		MsgType: msgType,
+		WithdrawId: withdrawId,
 		Owner: owner,
 		TokenAddress: tokenAddress,
 		Standard: standard,
