@@ -33,7 +33,11 @@ func (r *Router) Send(msg msg.Message) error {
 	r.lock.Lock()
 	defer r.lock.Unlock()
 
-	r.log.Info("Routing message", "ChainType", msg.ChainType, "depositId", msg.DepositId, "owner", msg.Owner, "TokenAddress", msg.TokenAddress, "standard", msg.Standard, "tokenNumber", msg.TokenNumber)
+	if 0 == msg.MsgType {
+		r.log.Info("Routing deposit message", "ChainType", msg.ChainType, "depositId", msg.DepositId, "owner", msg.Owner, "TokenAddress", msg.TokenAddress, "standard", msg.Standard, "tokenNumber", msg.TokenNumber)
+	} else if 1 == msg.MsgType {
+		r.log.Info("Routing withdraw message", "ChainType", msg.ChainType, "withdrawId", msg.WithdrawId, "owner", msg.Owner, "TokenAddress", msg.TokenAddress, "standard", msg.Standard, "tokenNumber", msg.TokenNumber)
+	}
 	w := r.registry[msg.ChainType]
 	if w == nil {
 		return fmt.Errorf("unknown chainType: %d", msg.ChainType)
