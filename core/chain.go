@@ -5,6 +5,11 @@ import (
 	"github.com/NaturalSelectionLabs/bridge-utils/msg"
 )
 
+
+// ChainType
+const ChainTypeMainchain uint8 = 0
+const ChainTypeSideChain uint8 = 1
+
 type Chain interface {
 	Start() error // Start chain
 	SetRouter(*Router)

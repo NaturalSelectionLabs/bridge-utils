@@ -11,6 +11,11 @@ type ChainId uint8
 type TransferType string
 type ResourceId [32]byte
 
+// MsgType
+const MainchainDeposit uint8 = 0
+const SidechainWithdraw uint8 = 1
+const MainchainWithdraw uint8 = 2
+
 func (r ResourceId) Hex() string {
 	return fmt.Sprintf("%x", r)
 }

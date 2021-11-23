@@ -5,12 +5,12 @@ import (
 	"sync"
 
 	log "github.com/ChainSafe/log15"
-	"github.com/NaturalSelectionLabs/bridge-utils/msg"
+	bridgeMsg "github.com/NaturalSelectionLabs/bridge-utils/msg"
 )
 
 // Writer consumes a message and makes the requried on-chain interactions.
 type Writer interface {
-	ResolveMessage(message msg.Message) bool
+	ResolveMessage(message bridgeMsg.Message) bool
 }
 
 // Router forwards messages from their source to their destination
@@ -29,14 +29,16 @@ func NewRouter(log log.Logger) *Router {
 }
 
 // Send passes a message to the destination Writer if it exists
-func (r *Router) Send(msg msg.Message) error {
+func (r *Router) Send(msg bridgeMsg.Message) error {
 	r.lock.Lock()
 	defer r.lock.Unlock()
 
-	if 0 == msg.MsgType {
+	if bridgeMsg.MainchainDeposit == msg.MsgType {
 		r.log.Info("Routing deposit message", "ChainType", msg.ChainType, "depositId", msg.DepositId, "owner", msg.Owner, "TokenAddress", msg.TokenAddress, "standard", msg.Standard, "tokenNumber", msg.TokenNumber)
-	} else if 1 == msg.MsgType {
+	} else if bridgeMsg.SidechainWithdraw == msg.MsgType {
 		r.log.Info("Routing withdraw message", "ChainType", msg.ChainType, "withdrawId", msg.WithdrawId, "owner", msg.Owner, "TokenAddress", msg.TokenAddress, "standard", msg.Standard, "tokenNumber", msg.TokenNumber)
+	} else if bridgeMsg.MainchainWithdraw == msg.MsgType {
+		r.log.Info("Routing mainchain withdraw message", "ChainType", msg.ChainType, "withdrawId", msg.WithdrawId, "owner", msg.Owner, "TokenAddress", msg.TokenAddress, "standard", msg.Standard, "tokenNumber", msg.TokenNumber)
 	}
 	w := r.registry[msg.ChainType]
 	if w == nil {
